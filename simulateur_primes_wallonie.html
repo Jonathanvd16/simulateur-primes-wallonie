@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Simulateur de Primes Wallonie 2025</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2rem; background: #f8f9fa; }
+    h1 { color: #004080; }
+    label, select, input, button { display: block; margin: 1rem 0; font-size: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 2rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background-color: #e0e0e0; }
+    .results { margin-top: 2rem; }
+  </style>
+</head>
+<body>
+  <h1>Simulateur de Primes Rénovation - Wallonie 2025</h1>
+
+  <label for="revenu">Votre revenu imposable net (2023) :</label>
+  <input type="number" id="revenu" placeholder="ex : 32000">
+
+  <label for="categorie">Catégorie de revenus :</label>
+  <select id="categorie">
+    <option value="R1">R1 - ≤ 26.900 €</option>
+    <option value="R2">R2 - 26.900,01 € à 38.300 €</option>
+    <option value="R3">R3 - 38.300,01 € à 50.600 €</option>
+    <option value="R4">R4 - 50.600,01 € à 114.400 €</option>
+  </select>
+
+  <button onclick="calculerPrimes()">Calculer mes primes</button>
+
+  <div class="results" id="resultats"></div>
+
+  <script>
+    const primes = [
+      { travail: "Isolation toiture biosourcée", unite: "€/m²", R1: 156, R2: 104, R3: 78, R4: 52, base: 26, audit: "Non", condition: "R ≥ 5.00 m²K/W" },
+      { travail: "Menuiseries extérieures", unite: "€/m²", R1: 156, R2: 104, R3: 78, R4: 52, base: 26, audit: "Oui", condition: "Uw ≤ 1.50 / Ug ≤ 1.10" },
+      { travail: "PAC combinée", unite: "Forfait", R1: 3600, R2: 2400, R3: 1800, R4: 1200, base: 600, audit: "Oui", condition: "Appareil éligible" },
+      { travail: "VMC double flux (total)", unite: "Forfait", R1: 4080, R2: 2720, R3: 2040, R4: 1360, base: 680, audit: "Oui", condition: "Rendement ≥ 78%" },
+      { travail: "Assèchement humidité ascensionnelle", unite: "€/m²", R1: 19.20, R2: 12.80, R3: 9.60, R4: 6.40, base: 3.20, audit: "Oui", condition: "" },
+      { travail: "Installation électrique", unite: "Forfait", R1: 1920, R2: 1280, R3: 960, R4: 640, base: 320, audit: "Oui", condition: "" },
+      { travail: "Isolation murs biosourcée", unite: "€/m²", R1: 72, R2: 48, R3: 36, R4: 24, base: 12, audit: "Oui", condition: "R ≥ 4.00 m²K/W" }
+    ];
+
+    function calculerPrimes() {
+      const cat = document.getElementById('categorie').value;
+      const revenu = document.getElementById('revenu').value;
+
+      let html = `<table><tr><th>Travaux</th><th>Prime (${cat})</th><th>Unité</th><th>Audit obligatoire</th><th>Conditions techniques</th></tr>`;
+      primes.forEach(p => {
+        html += `<tr>
+          <td>${p.travail}</td>
+          <td>${p[cat]} €</td>
+          <td>${p.unite}</td>
+          <td>${p.audit}</td>
+          <td>${p.condition}</td>
+        </tr>`;
+      });
+      html += `</table>`;
+
+      document.getElementById("resultats").innerHTML = html;
+    }
+  </script>
+</body>
+</html>
